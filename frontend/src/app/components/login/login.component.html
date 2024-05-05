@@ -11,13 +11,34 @@
     <form>
       <label>
         <p>Your Email</p>
-        <input type="text" />
+        <input
+          type="email"
+          #username
+          [(ngModel)]="loginObj.username"
+          name="username"
+          required
+        />
       </label>
       <label>
         <p>Password</p>
-        <input type="password" class="input-password" />
+        <input
+          type="password"
+          class="input-password"
+          #password
+          [(ngModel)]="loginObj.password"
+          name="password"
+          required
+        />
       </label>
-      <button type="button" class="btn-login">Login</button>
+      <button type="button" class="btn-login" (click)="onLogin()">Login</button>
     </form>
   </div>
 </div>
+
+<!-- [(ngModel)]="loginObj.username"
+          name="username"
+          required -->
+<!-- [(ngModel)]="loginObj.password"
+          name="password"
+          required -->
+<!-- (click)="onLogin() -->
