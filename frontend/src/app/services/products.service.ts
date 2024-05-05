@@ -12,4 +12,13 @@ export class ProductsService {
   getProducts = (url: string, params?: any): Observable<Products> => {
     return this.apiService.get(url, params);
   };
+  addProduct = (url: string, body: any): Observable<any> => {
+    return this.apiService.post(url, body, { observe: 'body' });
+  };
+  editProduct = (url: string, body: any): Observable<any> => {
+    return this.apiService.put(url, body, { observe: 'body' });
+  };
+  deleteProduct = (url: string): Observable<any> => {
+    return this.apiService.delete(url, { observe: 'body' });
+  };
 }
