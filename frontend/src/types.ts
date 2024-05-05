@@ -43,5 +43,5 @@ export interface Product {
 export interface Products {
   count: number;
   result: Product[];
-  metadata: any; 
+  metadata: any;
 }
