@@ -1,3 +1,7 @@
+@import "./styles/variables.scss";
+@import "primeng/resources/themes/vela-green/theme.css";
+@import "primeng/resources/primeng.css";
+
 html,
 body,
 p,
@@ -9,6 +13,7 @@ h5 {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Poppins;
 }
 
 html,
@@ -42,9 +47,24 @@ app-root {
 .mb-25 {
   margin-bottom: 25px;
 }
+.ml-15 {
+  margin-left: 15px;
+}
+.ml-25 {
+  margin-left: 25px;
+}
+.mr-15 {
+  margin-right: 15px;
+}
+.mr-25 {
+  margin-right: 25px;
+}
 
 .wrap {
   flex-wrap: wrap;
+}
+.pointer {
+    cursor: pointer;
 }
 
 .gap-1 {
@@ -68,5 +88,27 @@ app-root {
   justify-content: center;
 }
 .hidden {
-    display: none;
+  display: none;
+}
+.btn-primary {
+  background-color: #61ba7a;
+  color: white;
+  font-size: 17px;
+  padding: 1px 20px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+}
+.btn-primary:hover {
+  cursor: pointer;
+}
+.btn-secondary {
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 17px;
+  color: var(--text-grey);
+}
+.btn-secondary:hover {
+  cursor: pointer;
 }
