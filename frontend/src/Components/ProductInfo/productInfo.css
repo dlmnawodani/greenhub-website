@@ -1,0 +1,68 @@
+.productInfo__container {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  top: 60px;
+  margin-left: 150px;
+
+  background-color: white;
+  z-index: 999;
+
+  width: 820px;
+  /* height: 90vh; */
+  overflow-y: auto;
+  border-radius: 10px;
+  border: 1px solid #1ea343;
+  padding: 10px 15px;
+  justify-content: center;
+  align-items: center;
+}
+.productInfo__container-banner img {
+  width: 450px;
+  height: auto;
+  border-radius: 30px;
+}
+.productInfo__container-details {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+.productInfo__container-details h3 {
+  font-size: 26px;
+  padding-bottom: 10px;
+}
+.productInfo__container-details .productInfo__price {
+  font-size: 22px;
+  margin-top: 20px;
+  color: var(--primary-green);
+}
+.cta__btns {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+.cta__btns .cta__btns-addCart {
+  background-color: var(--primary-green);
+  border: none;
+  outline: none;
+  padding: 5px 15px;
+  margin-right: 10px;
+  color: white;
+}
+.cta__btns .cta__btns-cancel {
+  background-color: var(--secondary-red);
+  border: none;
+  outline: none;
+  padding: 5px 15px;
+  margin-right: 10px;
+  color: white;
+}
+.productInfo__certified img {
+  width: 300px;
+}
+.cta__btns .cta__btns-addCart:hover, .cta__btns .cta__btns-cancel:hover {
+    cursor: pointer;
+}
+.productInfo__quantity {
+    width: 200px;
+}

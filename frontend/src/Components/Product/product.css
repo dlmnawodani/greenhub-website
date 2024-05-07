@@ -1,0 +1,28 @@
+.product__container {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  
+}
+.product {
+  border: 1px solid #EFEFEF;
+  border-radius: 30px;
+}
+.product__container-img img {
+  width: 300px;
+  border-radius: 30px;
+}
+.product__container-body_details p {
+    color: var(--primary-green);
+}
+.product__container-body_cta button {
+  border: 1px solid var(--primary-green);
+  padding: 3px 15px;
+  background-color: var(--primary-green);
+  color: white;
+}
+.product__container-body_cta button:hover{
+    cursor: pointer;
+}

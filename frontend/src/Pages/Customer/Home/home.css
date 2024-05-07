@@ -1,0 +1,15 @@
+.home__container {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+.home__container h1 {
+  font-size: 24px;
+}
+.products__section {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  
+}
