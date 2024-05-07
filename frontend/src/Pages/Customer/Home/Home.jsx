@@ -22,8 +22,8 @@ const Home = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = useSelector((state) => state.auth.token);
   const user = useSelector((state) => state.auth.user);
-  const userId = useSelector((state) => state.auth.user.id);
-  console.log("us", userId);
+  const userId = useSelector((state) => state.auth.user?.id);
+
   const [isLoading, setIsLoading] = useState(false);
   const overlayRef = useRef(null);
   //get
@@ -109,7 +109,7 @@ const Home = () => {
     }
   };
   useEffect(() => {
-    if (token && !isLoading) {
+    if (token || !isLoading) {
       (async () => {
         await loadProducts();
         await loadMostSold(userId);
@@ -177,24 +177,26 @@ const Home = () => {
           {cartVisibility && <Cart />}
           {cusProfileVisibility && <CusProfile />}
         </div>
-        <div className="recommended__products">
-          <h1 className="home__container-header">Recommended Products</h1>
-          {mostSoldData?.most_purchased_product?.category.id ==
-          "6637d0d69129066ed0455c0e" ? (
-            <div className="products__section">
-              <ProductByCategory prod={zeroWasteData} />
-            </div>
-          ) : mostSoldData?.most_purchased_product?.category.id ==
-            "6637d0c29129066ed0455c0d" ? (
-            <div className="products__section">
-              <ProductByCategory prod={beautyData} />
-            </div>
-          ) : (
-            <div className="products__section">
-              <ProductByCategory prod={greenKitchenData} />
-            </div>
-          )}
-        </div>
+        {token && (
+          <div className="recommended__products">
+            <h1 className="home__container-header">Recommended Products</h1>
+            {mostSoldData?.most_purchased_product?.category.id ==
+            "6637d0d69129066ed0455c0e" ? (
+              <div className="products__section">
+                <ProductByCategory prod={zeroWasteData} />
+              </div>
+            ) : mostSoldData?.most_purchased_product?.category.id ==
+              "6637d0c29129066ed0455c0d" ? (
+              <div className="products__section">
+                <ProductByCategory prod={beautyData} />
+              </div>
+            ) : (
+              <div className="products__section">
+                <ProductByCategory prod={greenKitchenData} />
+              </div>
+            )}
+          </div>
+        )}
         <h1 className="home__container-header">Browse All Products</h1>
         <div className="products__section">
           <Product prod={productsData} />

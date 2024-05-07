@@ -1,0 +1,12 @@
+.admin-dashboard h1 {
+    margin-left: 20px;
+    margin-bottom: 30px;
+}
+.admin-dashboard h3 {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+.products-cta, .users-cta, .orders-cta {
+    display: flex;
+    flex-wrap: wrap;
+}
