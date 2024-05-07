@@ -1,0 +1,35 @@
+.create__container {
+  /* position: absolute; */
+  top: 10;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 1000; /* Ensure a high z-index value to appear above other content */
+  overflow: visible;
+  padding: 10px;
+  border: 2px solid var(--primary-green);
+  width: 800px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.create__container form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.create__container form input {
+    width: 300px;
+    height: 30px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+.create__container form button {
+    background-color: var(--primary-green);
+    color: white;
+    border: none;
+    outline: none;
+    padding: 5px 15px;
+}
+.create__container form button:hover{
+    cursor: pointer;
+}

@@ -10,3 +10,8 @@
     display: flex;
     flex-wrap: wrap;
 }
+.products-cta button, .users-cta button, .orders-cta button {
+    background: none;
+    border: none;
+    outline: none;
+}
