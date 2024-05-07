@@ -46,7 +46,7 @@ const EcoKitchen = () => {
       <Categories />
       <div className="ecoKitchen__products">
         <h1 className="ecoKitchen__container-header">
-          Browse Eco-Friendly Kitchen Products
+          🥦Browse Eco Kitchen Products
         </h1>
         <div className="products__section">
           <ProductByCategory prod={productsData} />
