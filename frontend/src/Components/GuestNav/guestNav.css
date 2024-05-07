@@ -1,0 +1,44 @@
+.wrapper {
+  justify-content: space-between;
+}
+.wrapper-left {
+  padding-left: 20px;
+}
+.logo {
+  scale: 0.7;
+  transform: translateY(10px);
+}
+.wrapper-search input {
+  width: 440px;
+  height: 30px;
+  border-radius: 30px;
+  border: none;
+  background-color: #efefef;
+  outline: none;
+  padding: 1px 20px;
+  margin-right: 20px;
+}
+.wrapper-search .icon {
+  width: 24px;
+  margin-top: 5px;
+  transform: translateY(5px);
+}
+.wrapper-right {
+  transform: translateY(5px);
+  margin-right: 50px;
+}
+.wrapper-right h3 {
+  font-size: 17px;
+  font-weight: 500;
+  color: #39b54a;
+  margin-right: 20px;
+  
+}
+.wrapper-right .icon {
+  width: 24px;
+  margin-right: 20px;
+}
+.wrapper-right a{
+    text-decoration: none;
+    color: black;
+}
