@@ -17,7 +17,7 @@ const SignUp = () => {
   const [userMail, setUserMail] = useState("");
   const [telephone, setTelephone] = useState("");
   const [userPass, setUserPass] = useState("");
-  const [geoLocation, setGeoLocation] = useState([]);
+  const [geoLocation, setGeoLocation] = useState("");
   const [profileImg, setProfileImg] = useState("");
 
   //Formatting the string into an array
