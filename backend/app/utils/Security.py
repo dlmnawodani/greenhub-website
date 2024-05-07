@@ -64,6 +64,9 @@ class Security:
             raise e
 
     def decode_access_token(self, token: str) -> Optional[dict]:
+        print("===========================================================")
+        print("HTTP_403_FORBIDDEN >>> ", token)
+        print("===========================================================")
         try:
             token_access_secret_key = self.settings.JWT_TOKEN_ACCESS_SECRET_KEY
             token_algorithm = self.settings.JWT_TOKEN_ALGORITHM

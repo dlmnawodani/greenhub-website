@@ -20,7 +20,7 @@ const GuestNav = () => {
         <input type="search" />
         <img src={search} alt="search" className="icon pointer" />
       </div>
-      <div className="wrapper-right row">
+      <div className="wrapper-guest_right row">
         <NavLink to="/">
           <h3 className="pointer">Home</h3>
         </NavLink>
