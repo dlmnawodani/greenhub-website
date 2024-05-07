@@ -108,6 +108,7 @@ class BaseOrder(BaseModel):
                 "remark": fake.text()
             }
         }
+        extra="allow"
 
 # BaseOrder.model_rebuild()
 

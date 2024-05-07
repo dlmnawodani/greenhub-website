@@ -29,7 +29,8 @@ from pydantic import BaseModel, \
     EmailStr
 from pydantic.json import pydantic_encoder
 from beanie import PydanticObjectId, BackLink
-# from datetime import datetime, timezone, timedelta
+from fastapi import FastAPI, Query
+from datetime import datetime, timezone, timedelta
 # from decimal import Decimal
 from faker import Faker
 from app.enums.OrderStatus import OrderStatus as OrderStatus
@@ -49,6 +50,32 @@ class OrderReadRequest(PaginateRequest):
             alias="user_id",
             description="user_id"
         )
+    date_from: Optional[datetime] = Field(
+            default=None, 
+            alias="date_from",
+            description="date_from"
+        )
+    date_to: Optional[datetime] = Field(
+            default=None, 
+            alias="date_to",
+            description="date_to"
+        )
+    # ids: Optional[List[str]] = Field(
+    #         Query(
+    #             # default=None,
+    #             alias="ids",
+    #             description="ids",
+    #             default_factory=list
+    #         ),
+    #     )
+    ids: List[str] = Field(
+            Query(
+                # default=None,
+                alias="ids",
+                description="ids",
+                default_factory=list
+            )
+        )
 
     class Config:
         # pass
@@ -64,7 +91,9 @@ class OrderReadRequest(PaginateRequest):
         json_schema_extra = {
             "example": {
                 **paginate_request_schema,
-                "order_status": fake.random_element(elements=[status.value for status in OrderStatus])
+                "order_status": fake.random_element(elements=[status.value for status in OrderStatus]),
+                "date_from": datetime.now(timezone.utc), # datetime.now(timezone.utc).replace(tzinfo=None) # fake.date_time_between(start_date='-1y', end_date='now')
+                "date_to": datetime.now(timezone.utc), # datetime.now(timezone.utc).replace(tzinfo=None) # fake.date_time_between(start_date='-1y', end_date='now')
             }
         }
 

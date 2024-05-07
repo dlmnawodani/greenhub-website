@@ -12,8 +12,7 @@ from typing import TYPE_CHECKING, \
     ForwardRef, \
     Annotated, \
     Union, \
-    List, \
-    Tuple
+    List
 from pydantic import BaseModel, \
     dataclasses, \
     ConfigDict, \
@@ -32,48 +31,32 @@ from beanie import PydanticObjectId, BackLink
 from datetime import datetime, timezone, timedelta
 # from decimal import Decimal
 from faker import Faker
+from app.schemas.base.BaseCategory import BaseCategory
 
 fake = Faker()
 
-class FileInput(BaseModel):
-    content: str = Field(
-            default=None, 
-            alias="content",
-            description="content"
-        )
-    filename: str = Field(
-            default=None, 
-            alias="filename",
-            description="filename"
-        )
-    # content_type: str = Field(
-    #         default=None, 
-    #         alias="content_type",
-    #         description="content_type"
-    #     )
+class Category(BaseCategory):
+    # pass
 
-    class Config:
+    class Config(BaseCategory.Config):
         # pass
+        base_category_schema = BaseCategory.Config.json_schema_extra["example"]
         populate_by_name = True
         arbitrary_types_allowed = True # required for the _id
         use_enum_values = True
-        # from_attributes = True
-        # json_encoders = {
-        #     # CustomType: lambda v: pydantic_encoder(v) if isinstance(v, CustomType) else None,
-        #     # datetime: lambda v: v.isoformat() if isinstance(v, datetime) else None,
-        #     # BackLink: lambda x: None,  # Exclude BackLink fields from serialization
-        # }
+        json_encoders = {
+            # CustomType: lambda v: pydantic_encoder(v) if isinstance(v, CustomType) else None,
+            # datetime: lambda v: v.isoformat() if isinstance(v, datetime) else None,
+            BackLink: lambda x: None,  # Exclude BackLink fields from serialization
+        }
         json_schema_extra = {
             "example": {
-                "content": "base64",
-                "filename": "str",
-                # "content_type": "str"
+                **base_category_schema,
             }
         }
-        extra="allow"
 
-# FileInput.model_rebuild()
+# Category.model_rebuild()
 
 __all__ = [
-    "FileInput"
+    "Category"
 ]

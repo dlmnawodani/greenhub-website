@@ -28,6 +28,7 @@ from pydantic import BaseModel, \
     GetJsonSchemaHandler
 from pydantic.json import pydantic_encoder
 from beanie import PydanticObjectId, BackLink
+from fastapi import FastAPI, Query
 # from datetime import datetime, timezone, timedelta
 # from decimal import Decimal
 from faker import Faker
@@ -45,6 +46,30 @@ class ProductReadRequest(PaginateRequest):
             default=None, 
             alias="name",
             description="name"
+        )
+    # ids: Optional[List[str]] = Field(
+    #         Query(
+    #             # default=None,
+    #             alias="ids",
+    #             description="ids",
+    #             default_factory=list
+    #         ),
+    #     )
+    ids: List[str] = Field(
+            Query(
+                # default=None,
+                alias="ids",
+                description="ids",
+                default_factory=list
+            )
+        )
+    category_ids: List[str] = Field(
+            Query(
+                # default=None,
+                alias="category_ids",
+                description="category_ids",
+                default_factory=list
+            )
         )
 
     class Config:

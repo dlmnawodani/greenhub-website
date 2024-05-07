@@ -94,6 +94,7 @@ class BaseCart(BaseModel):
                 "ip_address": fake.ipv4()
             }
         }
+        extra="allow"
 
 # BaseCart.model_rebuild()
 

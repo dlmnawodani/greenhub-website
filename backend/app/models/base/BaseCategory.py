@@ -33,7 +33,7 @@ from faker import Faker
 
 fake = Faker()
 
-class BaseProduct(Document):
+class BaseCategory(Document):
     # id: Optional[UUID] = Field(
     #         # default=None, 
     #         alias="id",
@@ -45,35 +45,10 @@ class BaseProduct(Document):
     #         alias="id",
     #         description="id"
     #     )
-    # category_id: Optional[PydanticObjectId] = Field(
-    #         default=None, 
-    #         alias="category_id",
-    #         description="category_id"
-    #     )
-    sku: Optional[str] = Field(
-            default=None, 
-            alias="sku",
-            description="sku"
-        ) # Indexed(str, unique=True)
     name: Optional[str] = Field(
             default=None, 
             alias="name",
             description="name"
-        )
-    qty_in_stock: Optional[int] = Field(
-            default=0, 
-            alias="qty_in_stock",
-            description="qty_in_stock"
-        )
-    price: Optional[float] = Field(
-            default=float(0.0), 
-            alias="price",
-            description="price"
-        ) # Optional[float]
-    image: Optional[str] = Field(
-            default=None, 
-            alias="image",
-            description="image"
         )
     created_at: Optional[datetime] = Field(
             # default=None, 
@@ -87,21 +62,6 @@ class BaseProduct(Document):
             description="updated_at", 
             default_factory=datetime.now
         )
-    # ip_address: Optional[str] = Field(
-    #         default=None, 
-    #         alias="ip_address",
-    #         description="ip_address"
-    #     )
-    remark: Optional[str] = Field(
-            default=None, 
-            alias="remark",
-            description="remark"
-        )
-
-    def _generate_sku(self):
-        # sku = self.name.replace(" ", "_").lower() + "_" + str(uuid.uuid4().hex)[:6]
-        sku = str(uuid4())
-        return sku
     
     '''
     # def model_dump(self, **kwargs) -> Dict[str, Any]:
@@ -110,26 +70,6 @@ class BaseProduct(Document):
     # def model_dump_json(self, **kwargs) -> str:
     #     return super().model_dump_json(**kwargs)
     '''
-
-    @before_event(Insert)
-    async def before_insert(self):
-        # # Generate id if not provided
-        # if not self.id:
-        #     self.id = str(uuid.uuid4())
-        
-        # Generate sku if not provided
-        if not self.sku:
-            self.sku = self._generate_sku()
-
-        # Generate created_at if not provided
-        if not self.created_at:
-            self.created_at = datetime.now(timezone.utc)
-
-    @before_event(Replace)
-    async def before_ubdate(self):
-        # Generate updated_at if not provided
-        if not self.updated_at:
-            self.updated_at = datetime.now(timezone.utc)
 
     '''
     # def __init__(self, **kwargs):
@@ -170,7 +110,7 @@ class BaseProduct(Document):
     # '''
 
     class Settings:
-        name = "products"
+        name = "categories"
         # is_root = True
         # max_nesting_depth = 1
         # max_nesting_depths_per_field = {}
@@ -188,5 +128,5 @@ class BaseProduct(Document):
 
 
 __all__ = [
-    "BaseProduct"
+    "BaseCategory"
 ]

@@ -39,8 +39,16 @@ class Base(BaseModel):
     ) -> Dict[str, Any]:
         json_schema = super().__get_pydantic_json_schema__(core_schema, handler)
         json_schema = handler.resolve_ref_schema(json_schema)
-        json_schema.update(examples='examples')
+        json_schema.update(examples="examples")
         return json_schema
+    
+    '''
+    # @classmethod
+    # def model_validate(cls, obj):
+    #     if isinstance(obj.get("names"), list):
+    #         obj["names"] = obj["names"]
+    #     return super().model_validate(obj)
+    '''
 
 # Base.model_rebuild()
 

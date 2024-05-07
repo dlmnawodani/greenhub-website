@@ -32,12 +32,13 @@ from beanie import PydanticObjectId, BackLink
 from datetime import datetime, timezone, timedelta
 # from decimal import Decimal
 from faker import Faker
+from app.enums.GeoType import GeoType as GeoType
 
 fake = Faker()
 
 class GeoObject(BaseModel):
-    type: str = Field(
-            default="Point", 
+    type: GeoType = Field(
+            default=GeoType.POINT.value, 
             alias="type",
             description="type"
         )
@@ -64,6 +65,7 @@ class GeoObject(BaseModel):
                 "coordinates": (float(fake.longitude()), float(fake.latitude()))
             }
         }
+        extra="allow"
 
 # BaseReview.model_rebuild()
 

@@ -17,7 +17,7 @@ from typing import TYPE_CHECKING, \
     ForwardRef, \
     Annotated, \
     List
-from fastapi import FastAPI, APIRouter, Request, Depends, HTTPException, status, security, Query, Body, Form, File, UploadFile
+from fastapi import FastAPI, APIRouter, Request, Depends, Security, HTTPException, status, Query, Path, Body, Cookie, Header, Form, File, UploadFile
 from fastapi.responses import JSONResponse, HTMLResponse, StreamingResponse
 # import pymongo as pymongo
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
@@ -65,7 +65,7 @@ async def create_review(
         dependencies=[]
     )
 async def update_review(
-        id: str,
+        id: Annotated[str, Path(title="id")],
         request_schema: ReviewUpdateRequestSchema,
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
@@ -81,7 +81,7 @@ async def update_review(
         dependencies=[]
     )
 async def delete_review(
-        id: str,
+        id: Annotated[str, Path(title="id")],
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
         client_ip: Optional[str] = Depends(ClientIPGetter())
@@ -111,7 +111,7 @@ async def read_reviews(
         dependencies=[]
     )
 async def read_review_by_id(
-        id: str,
+        id: Annotated[str, Path(title="id")],
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
         client_ip: Optional[str] = Depends(ClientIPGetter())

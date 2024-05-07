@@ -106,6 +106,7 @@ class BaseReview(BaseModel):
                 "ip_address": fake.ipv4()
             }
         }
+        extra="allow"
 
 # BaseReview.model_rebuild()
 

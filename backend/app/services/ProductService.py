@@ -29,6 +29,7 @@ from app.utils.Logger import Logger as Logger
 from app.utils.FileHandler import FileHandler as FileHandler
 # import models
 from app.models.Product import Product as ProductModel
+from app.models.Category import Category as CategoryModel
 # import schemas
 from app.schemas.User import User as UserSchema
 from app.schemas.Product import Product as ProductSchema
@@ -59,6 +60,13 @@ class ProductService:
                             exclude_unset=True,
                             # exclude_none=True
                         )
+
+                        category_id = product_create_request_schema_dict.get("category_id")
+                        category_instance = await CategoryModel.find_one(CategoryModel.id == PydanticObjectId(category_id))
+                        if not category_instance:
+                            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+                        product_create_request_schema_dict["category"] = category_instance
+
                         created_at = datetime.now(tz=timezone.utc)
                         product_create_request_schema_dict["created_at"] = created_at
                         product_create_request_schema_dict["ip_address"] = client_ip
@@ -104,6 +112,13 @@ class ProductService:
                             exclude_unset=True,
                             # exclude_none=True
                         )
+
+                        category_id = product_update_request_schema_dict.get("category_id")
+                        category_instance = await CategoryModel.find_one(CategoryModel.id == PydanticObjectId(category_id))
+                        if not category_instance:
+                            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+                        product_update_request_schema_dict["category"] = category_instance
+
                         updated_at = datetime.now(tz=timezone.utc)
                         product_update_request_schema_dict["updated_at"] = updated_at
 
@@ -189,6 +204,8 @@ class ProductService:
                             exclude_unset=True,
                             # exclude_none=True
                         )
+                
+                query_filters = {}
 
                 # Filter by SKU if provided
                 sku_filter = product_read_request_schema_dict.get("sku")
@@ -199,6 +216,20 @@ class ProductService:
                 name_filter = product_read_request_schema_dict.get("name")
                 if name_filter:
                     query = query.find(ProductModel.name == name_filter)
+
+                # Filter by ids if provided
+                ids_filter = product_read_request_schema_dict.get("ids")
+                if ids_filter:
+                    ids_filter_map = map(lambda id: PydanticObjectId(id), ids_filter)
+                    ids_filter_list = list(ids_filter_map)
+                    query = query.find(operators.In(ProductModel.id, ids_filter_list), fetch_links=True)
+
+                # Filter by category_ids if provided
+                category_ids_filter = product_read_request_schema_dict.get("category_ids")
+                if category_ids_filter:
+                    category_ids_filter_map = map(lambda id: PydanticObjectId(id), category_ids_filter)
+                    category_ids_filter_list = list(category_ids_filter_map)
+                    query = query.find(operators.In(ProductModel.category.id, category_ids_filter_list), fetch_links=True)
 
                 total_count = await query.count()
 

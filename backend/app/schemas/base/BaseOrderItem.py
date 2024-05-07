@@ -83,6 +83,7 @@ class BaseOrderItem(BaseModel):
                 "price": float(fake.pydecimal(min_value=10, max_value=1000, right_digits=2))
             }
         }
+        extra="allow"
 
 # BaseOrderItem.model_rebuild()
 

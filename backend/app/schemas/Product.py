@@ -33,6 +33,7 @@ from datetime import datetime, timezone, timedelta
 from faker import Faker
 from app.schemas.base.BaseProduct import BaseProduct
 from app.schemas.base.BaseReview import BaseReview
+from app.schemas.base.BaseCategory import BaseCategory
 
 fake = Faker()
 
@@ -43,11 +44,17 @@ class Product(BaseProduct):
             alias="reviews",
             description="reviews"
         )
+    category: Optional[Union[BaseCategory, dict, Any]] = Field(
+            default=None, 
+            alias="category",
+            description="category"
+        )
 
     class Config(BaseProduct.Config):
         # pass
         base_product_schema = BaseProduct.Config.json_schema_extra["example"]
         base_review_schema = BaseReview.Config.json_schema_extra["example"]
+        base_category_schema = BaseCategory.Config.json_schema_extra["example"]
         populate_by_name = True
         arbitrary_types_allowed = True # required for the _id
         use_enum_values = True
@@ -63,7 +70,10 @@ class Product(BaseProduct):
                     {
                         **base_review_schema
                     }
-                ]
+                ],
+                "category": {
+                    **base_category_schema
+                }
             }
         }
 

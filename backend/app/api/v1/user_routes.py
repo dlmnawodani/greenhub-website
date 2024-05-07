@@ -17,7 +17,7 @@ from typing import TYPE_CHECKING, \
     ForwardRef, \
     Annotated, \
     List
-from fastapi import FastAPI, APIRouter, Request, Depends, HTTPException, status, security, Query, Body, Form, File, UploadFile
+from fastapi import FastAPI, APIRouter, Request, Depends, Security, HTTPException, status, Query, Path, Body, Cookie, Header, Form, File, UploadFile
 from fastapi.responses import JSONResponse, HTMLResponse, StreamingResponse
 # import pymongo as pymongo
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
@@ -64,7 +64,7 @@ async def create_user(
         dependencies=[]
     )
 async def update_user(
-        id: str,
+        id: Annotated[str, Path(title="id")],
         request_schema: UserUpdateRequestSchema, 
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
@@ -80,7 +80,7 @@ async def update_user(
         dependencies=[]
     )
 async def delete_user(
-        id: str,
+        id: Annotated[str, Path(title="id")],
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
         client_ip: Optional[str] = Depends(ClientIPGetter())
@@ -110,12 +110,28 @@ async def read_users(
         dependencies=[]
     )
 async def read_user_by_id(
-        id: str,
+        id: Annotated[str, Path(title="id")],
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
         client_ip: Optional[str] = Depends(ClientIPGetter())
     ) -> Optional[UserSchema]:
         response = await user_controller.read_user_by_id(id, db, current_user, client_ip)
+        return response
+
+
+@router.get(
+        "/users-with-most-sold-product", 
+        response_model=Optional[PaginateResponseSchema[List[UserSchema]]], 
+        status_code=status.HTTP_200_OK, 
+        dependencies=[]
+    )
+async def read_users_with_most_sold_product(
+        request_schema: UserReadRequestSchema = Depends(UserReadRequestSchema),
+        db: AsyncIOMotorDatabase = Depends(database.get_database), 
+        current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
+        client_ip: Optional[str] = Depends(ClientIPGetter())
+    ) -> Optional[PaginateResponseSchema[List[UserSchema]]]:
+        response = await user_controller.read_users_with_most_sold_product(request_schema, db, current_user, client_ip)
         return response
 
 

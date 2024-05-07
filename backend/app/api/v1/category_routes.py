@@ -27,109 +27,97 @@ from app.configs.Setting import Setting as Setting
 from app.utils.Logger import Logger as Logger
 # import schemas
 from app.schemas.User import User as UserSchema
-from app.schemas.Cart import Cart as CartSchema
-from app.schemas.CartItemCreateRequest import CartItemCreateRequest as CartItemCreateRequestSchema
-from app.schemas.CartItemUpdateRequest import CartItemUpdateRequest as CartItemUpdateRequestSchema
-from app.schemas.CartReadRequest import CartReadRequest as CartReadRequestSchema
+from app.schemas.Category import Category as CategorySchema
+from app.schemas.CategoryCreateRequest import CategoryCreateRequest as CategoryCreateRequestSchema
+from app.schemas.CategoryUpdateRequest import CategoryUpdateRequest as CategoryUpdateRequestSchema
+from app.schemas.CategoryReadRequest import CategoryReadRequest as CategoryReadRequestSchema
 from app.schemas.PaginateResponse import PaginateResponse as PaginateResponseSchema
 # import controllers
-from app.controllers.CartController import CartController as CartController
+from app.controllers.CategoryController import CategoryController as CategoryController
 # import dependencies
 from app.dependencies.CurrentUserGetter import CurrentUserGetter as CurrentUserGetter
 from app.dependencies.ClientIPGetter import ClientIPGetter as ClientIPGetter
 
 router = APIRouter()
-cart_controller = CartController()
+category_controller = CategoryController()
 settings = Setting()
 
+
 @router.post(
-        "/carts/items", 
-        response_model=Optional[CartSchema], 
+        "/categories", 
+        response_model=Optional[CategorySchema], 
         status_code=status.HTTP_201_CREATED, 
         dependencies=[]
     )
-async def create_review(
-        request_schema: CartItemCreateRequestSchema, 
+async def create_category(
+        request_schema: CategoryCreateRequestSchema, 
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
         client_ip: Optional[str] = Depends(ClientIPGetter())
-    ) -> Optional[CartSchema]:
-        response = await cart_controller.create_cart_item(request_schema, db, current_user, client_ip)
+    ) -> Optional[CategorySchema]:
+        response = await category_controller.create_category(request_schema, db, current_user, client_ip)
         return response
 
 @router.put(
-        "/carts/items/{id}", 
-        response_model=Optional[CartSchema], 
+        "/categories/{id}", 
+        response_model=Optional[CategorySchema], 
         status_code=status.HTTP_200_OK, 
         dependencies=[]
     )
-async def update_cart_item(
+async def update_category(
         id: Annotated[str, Path(title="id")],
-        request_schema: CartItemUpdateRequestSchema,
+        request_schema: CategoryUpdateRequestSchema, 
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
         client_ip: Optional[str] = Depends(ClientIPGetter())
-    ) -> Optional[CartSchema]:
-        response = await cart_controller.update_cart_item(id, request_schema, db, current_user, client_ip)
+    ) -> Optional[CategorySchema]:
+        response = await category_controller.update_category(id, request_schema, db, current_user, client_ip)
         return response
 
 @router.delete(
-        "/carts/items/{id}", 
+        "/categories/{id}", 
         response_model=None, 
         status_code=status.HTTP_204_NO_CONTENT, 
         dependencies=[]
     )
-async def delete_cart_item(
+async def delete_category(
         id: Annotated[str, Path(title="id")],
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
         client_ip: Optional[str] = Depends(ClientIPGetter())
     ) -> None:
-        await cart_controller.delete_cart_item(id, db, current_user, client_ip)
+        await category_controller.delete_category(id, db, current_user, client_ip)
 
 @router.get(
-        "/carts/items", 
-        response_model=Optional[PaginateResponseSchema[List[CartSchema]]], 
+        "/categories", 
+        response_model=Optional[PaginateResponseSchema[List[CategorySchema]]], 
         status_code=status.HTTP_200_OK, 
         dependencies=[]
     )
-async def read_carts(
-        request_schema: CartReadRequestSchema = Depends(CartReadRequestSchema),
+async def read_categories(
+        request_schema: CategoryReadRequestSchema = Depends(CategoryReadRequestSchema),
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
         client_ip: Optional[str] = Depends(ClientIPGetter())
-    ) -> Optional[PaginateResponseSchema[List[CartSchema]]]:
-        response = await cart_controller.read_carts(request_schema, db, current_user, client_ip)
+    ) -> Optional[PaginateResponseSchema[List[CategorySchema]]]:
+        response = await category_controller.read_categories(request_schema, db, current_user, client_ip)
         return response
 
-
 @router.get(
-        "/carts/items/{id}", 
-        response_model=Optional[CartSchema], 
+        "/categories/{id}", 
+        response_model=Optional[CategorySchema], 
         status_code=status.HTTP_200_OK, 
         dependencies=[]
     )
-async def read_cart_item_by_id(
+async def read_category_by_id(
         id: Annotated[str, Path(title="id")],
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
         client_ip: Optional[str] = Depends(ClientIPGetter())
-    ) -> Optional[CartSchema]:
-        response = await cart_controller.read_cart_item_by_id(id, db, current_user, client_ip)
+    ) -> Optional[CategorySchema]:
+        response = await category_controller.read_category_by_id(id, db, current_user, client_ip)
         return response
 
-@router.delete(
-        "/carts/items", 
-        response_model=None, 
-        status_code=status.HTTP_204_NO_CONTENT, 
-        dependencies=[]
-    )
-async def delete_cart(
-        db: AsyncIOMotorDatabase = Depends(database.get_database), 
-        current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
-        client_ip: Optional[str] = Depends(ClientIPGetter())
-    ) -> None:
-        await cart_controller.delete_cart(db, current_user, client_ip)
 
 
 __all__ = [

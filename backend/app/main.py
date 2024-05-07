@@ -3,13 +3,13 @@
 # import logging as logging
 # import sys as sys
 import os as os
-from pathlib import Path
+from pathlib import Path as PathLibPath
 # from decouple import config
 # import asyncio as asyncio
 # from typing import TYPE_CHECKING
 from typing import TYPE_CHECKING, Optional, Any, Type, TypeVar, Generic, ForwardRef, Annotated, Union, List
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request, Depends, HTTPException, status, security, Query, Body, Form, File, UploadFile
+from fastapi import FastAPI, APIRouter, Request, Depends, Security, HTTPException, status, Query, Path, Body, Cookie, Header, Form, File, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.openapi.utils import get_openapi
@@ -31,6 +31,7 @@ from app.api.v1 import review_routes as review_routes
 from app.api.v1 import cart_routes as cart_routes
 from app.api.v1 import order_routes as order_routes
 from app.api.v1 import payment_routes as payment_routes
+from app.api.v1 import category_routes as category_routes
 # import models
 from app.models.User import User as UserModel
 from app.models.Review import Review as ReviewModel
@@ -39,6 +40,7 @@ from app.models.Payment import Payment as PaymentModel
 from app.models.OrderItem import OrderItem as OrderItemModel
 from app.models.Order import Order as OrderModel
 from app.models.Cart import Cart as CartModel
+from app.models.Category import Category as CategoryModel
  
 logging = Logger(__name__)
 settings = Setting()
@@ -57,8 +59,8 @@ settings = Setting()
 # if not os.path.exists(settings.STATIC_FRONTEND_FILES_DIRECTORY):
 #     os.makedirs(settings.STATIC_FRONTEND_FILES_DIRECTORY)
 '''
-Path(settings.STATIC_FRONTEND_FILES_DIRECTORY).mkdir(parents=True, exist_ok=True)
-Path(settings.STATIC_IMAGE_FILES_DIRECTORY).mkdir(parents=True, exist_ok=True)
+PathLibPath(settings.STATIC_FRONTEND_FILES_DIRECTORY).mkdir(parents=True, exist_ok=True)
+PathLibPath(settings.STATIC_IMAGE_FILES_DIRECTORY).mkdir(parents=True, exist_ok=True)
 
 app = FastAPI()
 
@@ -84,6 +86,7 @@ async def connect_and_init_db():
             database=db,
             document_models= [
                 UserModel,
+                CategoryModel,
                 ProductModel,
                 ReviewModel,
                 CartModel,
@@ -201,6 +204,13 @@ app.include_router(
     payment_routes.router,
     prefix=settings.API_ROUTE_PREFIX,
     tags=["payment"]
+)
+
+# # # Category
+app.include_router(
+    category_routes.router,
+    prefix=settings.API_ROUTE_PREFIX,
+    tags=["category"]
 )
 
 

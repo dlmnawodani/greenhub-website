@@ -31,6 +31,7 @@ from decimal import Decimal
 from faker import Faker
 from app.models.base.BaseProduct import BaseProduct
 from app.models.base.BaseReview import BaseReview
+from app.models.base.BaseCategory import BaseCategory
 
 fake = Faker()
 
@@ -42,6 +43,11 @@ class Product(BaseProduct):
     #         description="reviews", 
     #         original_field="product"
     #     )
+    category: Optional[Link[BaseCategory]] = Field(
+            default=None, 
+            alias="category",
+            description="category"
+        )
     
 
 

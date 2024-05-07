@@ -66,6 +66,11 @@ class ProductUpdateRequest(BaseModel):
             alias="remark",
             description="remark"
         )
+    category_id: Optional[str] = Field(
+            default=None, 
+            alias="category_id",
+            description="category_id"
+        )
 
     class Config:
         # pass
@@ -87,7 +92,8 @@ class ProductUpdateRequest(BaseModel):
                 "image": {
                     **file_input_schema
                 },
-                "remark": fake.text()
+                "remark": fake.text(),
+                "category_id": str(fake.uuid4()),
             }
         }
 

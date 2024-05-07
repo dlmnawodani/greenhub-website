@@ -234,6 +234,8 @@ class OrderService:
                             # exclude_none=True
                         )
                 
+                query_filters = {}
+                
                 # Filter by user_id if provided
                 user_id_filter = order_read_request_schema_dict.get("user_id")
                 if user_id_filter:
@@ -243,6 +245,29 @@ class OrderService:
                 order_status_filter = order_read_request_schema_dict.get("order_status")
                 if order_status_filter:
                     query = query.find(OrderModel.order_status == order_status_filter, fetch_links=True)
+
+                # Filter by date_from if provided
+                date_from_filter = order_read_request_schema_dict.get("date_from")
+                if date_from_filter:
+                    # date_from_filter = datetime.strptime(date_from_filter, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
+                    date_from_filter = datetime.combine(date_from_filter, datetime.min.time())
+                    query_filters.setdefault("created_at", {}).update({"$gte": date_from_filter})
+                    query = query.find(query_filters, fetch_links=True)
+
+                # Filter by date_to if provided
+                date_to_filter = order_read_request_schema_dict.get("date_to")
+                if date_to_filter:
+                    # date_to_filter = datetime.strptime(date_to_filter, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
+                    date_to_filter = datetime.combine(date_to_filter, datetime.max.time())
+                    query_filters.setdefault("created_at", {}).update({"$lt": date_to_filter})
+                    query = query.find(query_filters, fetch_links=True)
+
+                # Filter by ids if provided
+                ids_filter = order_read_request_schema_dict.get("ids")
+                if ids_filter:
+                    ids_filter_map = map(lambda id: PydanticObjectId(id), ids_filter)
+                    ids_filter_list = list(ids_filter_map)
+                    query = query.find(operators.In(ProductModel.id, ids_filter_list), fetch_links=True)
 
                 total_count = await query.count()
 

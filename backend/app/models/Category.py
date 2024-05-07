@@ -9,8 +9,7 @@ from typing import TYPE_CHECKING, \
     Optional, \
     Any, \
     Union, \
-    List, \
-    Tuple
+    List
 # import pymongo as pymongo
 from beanie import Document, Indexed, PydanticObjectId, Link, BackLink, before_event, after_event, Insert, Replace, Before, After
 from pydantic import BaseModel, \
@@ -25,29 +24,21 @@ from pydantic import BaseModel, \
     AliasChoices, \
     condecimal, \
     GetJsonSchemaHandler
-from pydantic.json import pydantic_encoder
 from datetime import datetime, timezone
 from uuid import UUID, uuid4
 from bson import ObjectId
 from decimal import Decimal
 from faker import Faker
-from app.enums.GeoType import GeoType as GeoType
+from app.models.base.BaseCategory import BaseCategory
 
 fake = Faker()
 
-class GeoObject(BaseModel):
-    type: GeoType = Field(
-            default=GeoType.POINT.value, 
-            alias="type",
-            description="type"
-        )
-    coordinates: Tuple[float, float] = Field(
-            # default=None, 
-            alias="coordinates",
-            description="coordinates [If specifying latitude and longitude coordinates, list the longitude first, and then latitude.]"
-        )
+class Category(BaseCategory):
+    pass
+    
 
 
 __all__ = [
-    "GeoObject"
+    "Category"
 ]
+

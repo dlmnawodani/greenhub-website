@@ -17,7 +17,7 @@ from typing import TYPE_CHECKING, \
     ForwardRef, \
     Annotated, \
     List
-from fastapi import FastAPI, APIRouter, Request, Depends, HTTPException, status, security, Query, Body, Form, File, UploadFile
+from fastapi import FastAPI, APIRouter, Request, Depends, Security, HTTPException, status, Query, Path, Body, Cookie, Header, Form, File, UploadFile
 from fastapi.responses import JSONResponse, HTMLResponse, StreamingResponse
 # import pymongo as pymongo
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
@@ -65,7 +65,7 @@ async def create_product(
         dependencies=[]
     )
 async def update_product(
-        id: str,
+        id: Annotated[str, Path(title="id")],
         request_schema: ProductUpdateRequestSchema, 
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
@@ -81,7 +81,7 @@ async def update_product(
         dependencies=[]
     )
 async def delete_product(
-        id: str,
+        id: Annotated[str, Path(title="id")],
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
         client_ip: Optional[str] = Depends(ClientIPGetter())
@@ -103,7 +103,6 @@ async def read_products(
         response = await product_controller.read_products(request_schema, db, current_user, client_ip)
         return response
 
-
 @router.get(
         "/products/{id}", 
         response_model=Optional[ProductSchema], 
@@ -111,7 +110,7 @@ async def read_products(
         dependencies=[]
     )
 async def read_product_by_id(
-        id: str,
+        id: Annotated[str, Path(title="id")],
         db: AsyncIOMotorDatabase = Depends(database.get_database), 
         current_user: Optional[UserSchema] = Depends(CurrentUserGetter(is_required=False)), 
         client_ip: Optional[str] = Depends(ClientIPGetter())

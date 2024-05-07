@@ -150,6 +150,7 @@ class BaseUser(BaseModel):
                 }
             }
         }
+        extra="allow"
 
 # BaseUser.model_rebuild()
 

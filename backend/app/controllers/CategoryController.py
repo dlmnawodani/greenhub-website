@@ -25,28 +25,29 @@ from app.configs.Setting import Setting as Setting
 from app.utils.Logger import Logger as Logger
 # import schemas
 from app.schemas.User import User as UserSchema
-from app.schemas.UserCreateRequest import UserCreateRequest as UserCreateRequestSchema
-from app.schemas.UserUpdateRequest import UserUpdateRequest as UserUpdateRequestSchema
-from app.schemas.UserReadRequest import UserReadRequest as UserReadRequestSchema
+from app.schemas.Category import Category as CategorySchema
+from app.schemas.CategoryCreateRequest import CategoryCreateRequest as CategoryCreateRequestSchema
+from app.schemas.CategoryUpdateRequest import CategoryUpdateRequest as CategoryUpdateRequestSchema
+from app.schemas.CategoryReadRequest import CategoryReadRequest as CategoryReadRequestSchema
 from app.schemas.PaginateResponse import PaginateResponse as PaginateResponseSchema
 # import services
-from app.services.UserService import UserService as UserService
+from app.services.CategoryService import CategoryService as CategoryService
 
-class UserController:
+class CategoryController:
     def __init__(self):
         self.settings = Setting()
         self.logger = Logger(__name__)
-        self.user_service = UserService()
+        self.category_service = CategoryService()
 
-    async def create_user(
+    async def create_category(
             self, 
-            user_create_request_schema: UserCreateRequestSchema, 
+            category_create_request_schema: CategoryCreateRequestSchema, 
             db: AsyncIOMotorDatabase, 
             current_user: Optional[Union[UserSchema, None]], 
             client_ip: Optional[Union[str, None]]
-        ) -> Optional[UserSchema]:
+        ) -> Optional[CategorySchema]:
         try:
-            temp_response = await self.user_service.create_user(user_create_request_schema, db, current_user, client_ip)
+            temp_response = await self.category_service.create_category(category_create_request_schema, db, current_user, client_ip)
             return temp_response
         except (HTTPException) as e:
             raise e
@@ -56,16 +57,16 @@ class UserController:
                     detail=f"Internal Server Error: {str(e)}"
                 )
 
-    async def update_user(
+    async def update_category(
             self, 
             id: str,
-            user_update_request_schema: UserUpdateRequestSchema, 
+            category_update_request_schema: CategoryUpdateRequestSchema, 
             db: AsyncIOMotorDatabase, 
             current_user: Optional[Union[UserSchema, None]], 
             client_ip: Optional[Union[str, None]]
-        ) -> Optional[UserSchema]:
+        ) -> Optional[CategorySchema]:
         try:
-            temp_response = await self.user_service.update_user(id, user_update_request_schema, db, current_user, client_ip)
+            temp_response = await self.category_service.update_category(id, category_update_request_schema, db, current_user, client_ip)
             return temp_response
         except (HTTPException) as e:
             raise e
@@ -75,7 +76,7 @@ class UserController:
                     detail=f"Internal Server Error: {str(e)}"
                 )
 
-    async def delete_user(
+    async def delete_category(
             self, 
             id: str,
             db: AsyncIOMotorDatabase, 
@@ -83,7 +84,7 @@ class UserController:
             client_ip: Optional[Union[str, None]]
         ) -> None:
         try:
-            await self.user_service.delete_user(id, db, current_user, client_ip)
+            await self.category_service.delete_category(id, db, current_user, client_ip)
         except (HTTPException) as e:
             raise e
         except Exception as e:
@@ -92,15 +93,15 @@ class UserController:
                     detail=f"Internal Server Error: {str(e)}"
                 )
 
-    async def read_users(
+    async def read_categories(
             self, 
-            user_read_request_schema: UserReadRequestSchema, 
+            category_read_request_schema: CategoryReadRequestSchema, 
             db: AsyncIOMotorDatabase, 
             current_user: Optional[Union[UserSchema, None]], 
             client_ip: Optional[Union[str, None]]
-        ) -> Optional[PaginateResponseSchema[List[UserSchema]]]:
+        ) -> Optional[PaginateResponseSchema[List[CategorySchema]]]:
         try:
-            temp_response = await self.user_service.read_users(user_read_request_schema, db, current_user, client_ip)
+            temp_response = await self.category_service.read_categories(category_read_request_schema, db, current_user, client_ip)
             return temp_response
         except (HTTPException) as e:
             raise e
@@ -110,33 +111,15 @@ class UserController:
                     detail=f"Internal Server Error: {str(e)}"
                 )
 
-    async def read_user_by_id(
+    async def read_category_by_id(
             self, 
             id: str, 
             db: AsyncIOMotorDatabase, 
             current_user: Optional[Union[UserSchema, None]], 
             client_ip: Optional[Union[str, None]]
-        ) -> Optional[UserSchema]:
+        ) -> Optional[CategorySchema]:
         try:
-            temp_response = await self.user_service.read_user_by_id(id, db, current_user, client_ip)
-            return temp_response
-        except (HTTPException) as e:
-            raise e
-        except Exception as e:
-            raise HTTPException(
-                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
-                    detail=f"Internal Server Error: {str(e)}"
-                )
-        
-    async def read_users_with_most_sold_product(
-            self, 
-            user_read_request_schema: UserReadRequestSchema, 
-            db: AsyncIOMotorDatabase, 
-            current_user: Optional[Union[UserSchema, None]], 
-            client_ip: Optional[Union[str, None]]
-        ) -> Optional[PaginateResponseSchema[List[UserSchema]]]:
-        try:
-            temp_response = await self.user_service.read_users_with_most_sold_product(user_read_request_schema, db, current_user, client_ip)
+            temp_response = await self.category_service.read_category_by_id(id, db, current_user, client_ip)
             return temp_response
         except (HTTPException) as e:
             raise e
@@ -147,5 +130,5 @@ class UserController:
                 )
 
 __all__ = [
-    "UserController"
+    "CategoryController"
 ]

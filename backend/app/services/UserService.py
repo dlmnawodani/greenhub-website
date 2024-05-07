@@ -30,9 +30,13 @@ from app.utils.Security import Security as Security
 from app.utils.FileHandler import FileHandler as FileHandler
 # import models
 from app.models.User import User as UserModel
-from app.models.Review import Review as Review
+from app.models.base.GeoObject import GeoObject as GeoObjectModel
+from app.models.Review import Review as ReviewModel
+from app.models.Order import Order as OrderModel
+from app.models.Product import Product as ProductModel
 # import schemas
 from app.schemas.User import User as UserSchema
+from app.schemas.Product import Product as ProductSchema
 from app.schemas.UserCreateRequest import UserCreateRequest as UserCreateRequestSchema
 from app.schemas.UserUpdateRequest import UserUpdateRequest as UserUpdateRequestSchema
 from app.schemas.UserReadRequest import UserReadRequest as UserReadRequestSchema
@@ -195,6 +199,8 @@ class UserService:
                             # exclude_none=True
                         )
                 
+                query_filters = {}
+                
                 # Filter by first_name if provided
                 first_name_filter = user_read_request_schema_dict.get("first_name")
                 if first_name_filter:
@@ -215,14 +221,46 @@ class UserService:
                 if user_role_filter:
                     query = query.find(UserModel.user_role == user_role_filter)
 
-                '''
-                # # Filter by geo if provided
-                # latitude = user_read_request_schema_dict.get("latitude")
-                # longitude = user_read_request_schema_dict.get("longitude")
-                # min_distance = user_read_request_schema_dict.get("min_distance")
-                # if latitude and longitude and min_distance:
-                #     query = query.find(operators.Near(UserModel.geo, longitude, latitude, min_distance=min_distance), fetch_links=True)
-                '''
+                # Filter by geo if provided
+                latitude = user_read_request_schema_dict.get("latitude")
+                longitude = user_read_request_schema_dict.get("longitude")
+                # min_distance = user_read_request_schema_dict.get("min_distance", 0)
+                # max_distance = user_read_request_schema_dict.get("max_distance", 0)
+                radius = user_read_request_schema_dict.get("radius", 0)
+                if latitude and longitude:
+                    # point = GeoObjectModel(coordinates=[longitude, latitude])
+                    '''
+                    # query = query.aggregate(
+                    #     [
+                    #         {
+                    #             "$geoNear": {
+                    #                 "near": point.model_dump(),
+                    #                 "distanceField": "distance",
+                    #                 "maxDistance": max_distance,
+                    #             }
+                    #         }
+                    #     ]
+                    # )
+                    '''
+
+                    '''
+                    # query_filters["geo"] = {
+                    #     "$near": {
+                    #         "$geometry": point.model_dump(),
+                    #         "$minDistance": min_distance,
+                    #         "$maxDistance": max_distance
+                    #     }
+                    # }
+                    '''
+
+                    query_filters["geo"] = {
+                        "$geoWithin": { 
+                            "$center": [ [longitude, latitude], radius ] 
+                        }
+                    }
+
+                    query = query.find(query_filters, fetch_links=True)
+
 
                 total_count = await query.count()
 
@@ -244,13 +282,160 @@ class UserService:
                     )
 
                 user_schema_list = [UserSchema.model_validate(v.model_dump(by_alias=True)) for v in results]
+
                 return PaginateResponseSchema[List[UserSchema]](count=total_count, result=user_schema_list)
 
             except Exception as e:
                 self.logger.exception("Error in read_users", e)
                 raise e
 
+    async def read_users_with_most_sold_product(
+            self, 
+            user_read_request_schema: UserReadRequestSchema, 
+            db: AsyncIOMotorDatabase, 
+            current_user: Optional[Union[UserSchema, None]], 
+            client_ip: Optional[Union[str, None]]
+        ) -> Optional[PaginateResponseSchema[List[UserSchema]]]:
+            self.logger.debug("read_users_with_most_sold_product called")
+            try:
+                query = UserModel.find(fetch_links=True)
+                user_read_request_schema_dict = user_read_request_schema.model_dump(
+                            exclude_unset=True,
+                            # exclude_none=True
+                        )
+                
+                query_filters = {}
+                
+                # Filter by first_name if provided
+                first_name_filter = user_read_request_schema_dict.get("first_name")
+                if first_name_filter:
+                    query = query.find(UserModel.first_name == first_name_filter)
 
+                # Filter by last_name if provided
+                last_name_filter = user_read_request_schema_dict.get("last_name")
+                if last_name_filter:
+                    query = query.find(UserModel.last_name == last_name_filter)
+
+                # Filter by email if provided
+                email_filter = user_read_request_schema_dict.get("email")
+                if email_filter:
+                    query = query.find(UserModel.email == email_filter)
+
+                # Filter by user_role if provided
+                user_role_filter = user_read_request_schema_dict.get("user_role")
+                if user_role_filter:
+                    query = query.find(UserModel.user_role == user_role_filter)
+
+                # Filter by geo if provided
+                latitude = user_read_request_schema_dict.get("latitude")
+                longitude = user_read_request_schema_dict.get("longitude")
+                # min_distance = user_read_request_schema_dict.get("min_distance", 0)
+                # max_distance = user_read_request_schema_dict.get("max_distance", 0)
+                radius = user_read_request_schema_dict.get("radius", 0)
+                if latitude and longitude:
+                    # point = GeoObjectModel(coordinates=[longitude, latitude])
+                    '''
+                    # query = query.aggregate(
+                    #     [
+                    #         {
+                    #             "$geoNear": {
+                    #                 "near": point.model_dump(),
+                    #                 "distanceField": "distance",
+                    #                 "maxDistance": max_distance,
+                    #             }
+                    #         }
+                    #     ]
+                    # )
+                    '''
+
+                    '''
+                    # query_filters["geo"] = {
+                    #     "$near": {
+                    #         "$geometry": point.model_dump(),
+                    #         "$minDistance": min_distance,
+                    #         "$maxDistance": max_distance
+                    #     }
+                    # }
+                    '''
+
+                    query_filters["geo"] = {
+                        "$geoWithin": { 
+                            "$center": [ [longitude, latitude], radius ] 
+                        }
+                    }
+
+                    query = query.find(query_filters, fetch_links=True)
+
+
+                total_count = await query.count()
+
+                if "paginate" in user_read_request_schema_dict and user_read_request_schema_dict.get("paginate") == True:
+                    query.skip(
+                            user_read_request_schema_dict.get("skip", 0)
+                        ).limit(
+                            user_read_request_schema_dict.get("limit", 0)
+                        )
+                    
+                query = query.sort(
+                    [
+                        (UserModel.id, pymongo.DESCENDING)
+                    ]
+                )
+
+                results = await query.to_list(
+                        # length=user_read_request_schema_dict.get("limit", 0)
+                    )
+
+                user_schema_list = [UserSchema.model_validate(v.model_dump(by_alias=True)) for v in results]
+
+                for user_schema in user_schema_list:
+                    most_purchased_product, total_quantity = await self.get_most_purchased_product_and_quantity(
+                        PydanticObjectId(user_schema.id)
+                    )
+
+                    if most_purchased_product:
+                        db_most_purchased_product = await ProductModel.find_one(operators.Eq(ProductModel.id, PydanticObjectId(most_purchased_product.id)))
+                        if db_most_purchased_product:
+                            db_most_purchased_product_schema = ProductSchema.model_validate(db_most_purchased_product.model_dump(by_alias=True))
+                            user_schema.most_purchased_product = db_most_purchased_product_schema
+                            user_schema.most_purchased_product_quantity = total_quantity
+
+                return PaginateResponseSchema[List[UserSchema]](count=total_count, result=user_schema_list)
+
+            except Exception as e:
+                self.logger.exception("Error in read_users_with_most_sold_product", e)
+                raise e
+
+    async def get_most_purchased_product_and_quantity(self, user_id: PydanticObjectId) -> tuple[Optional[Any], int]:
+        # Define an aggregation pipeline to retrieve most purchased product and total quantity
+        aggregation_pipeline = [
+            {"$match": {"user.$id": user_id}},
+            {"$lookup": {
+                "from": "order_items",
+                "localField": "_id",
+                "foreignField": "order.$id",
+                "as": "order_items"
+            }},
+            {"$unwind": "$order_items"},
+            {"$group": {
+                "_id": "$order_items.product.$id",
+                "product": {"$first": "$order_items.product"},
+                "total_quantity": {"$sum": "$order_items.qty"}
+            }},
+            {"$sort": {"total_quantity": -1}},
+            {"$limit": 1}
+        ]
+
+        # Execute the aggregation pipeline
+        result = await OrderModel.aggregate(aggregation_pipeline).to_list(1)
+
+        if result:
+            most_purchased_product = result[0]["product"]
+            total_quantity = result[0]["total_quantity"]
+            return most_purchased_product, total_quantity
+
+        return None, 0
+    
 __all__ = [
     "UserService"
 ]

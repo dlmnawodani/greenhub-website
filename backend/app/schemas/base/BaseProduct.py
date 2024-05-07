@@ -112,6 +112,7 @@ class BaseProduct(BaseModel):
                 "remark": fake.text()
             }
         }
+        extra="allow"
 
 # BaseProduct.model_rebuild()
 
