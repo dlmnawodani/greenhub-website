@@ -5,49 +5,49 @@
 }
 
 .home__container-categories {
-    display: flex;
-    flex-direction: column;
-    width: 30vw;
-    padding-left: 10px;
-    padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 30vw;
+  padding-left: 10px;
+  padding-top: 10px;
 }
 .categories__header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .categories__header img {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 .categories__header h4 {
-    color: var(--primary-green);
-    font-weight: 600;
+  color: var(--primary-green);
+  font-weight: 600;
 }
 .categories__content ul a {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
 }
 .categories__content ul li {
-    list-style: none;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 10px;
-    transform: translateX(-20px);
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+  transform: translateX(-20px);
 }
-.categories__content ul li:hover{
-    cursor: pointer;
+.categories__content ul li:hover {
+  cursor: pointer;
 }
 .categories__content ul li img {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 .categories__content ul li h4 {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .home__products {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 .home__container h1 {
   font-size: 24px;
@@ -57,5 +57,31 @@
   flex: 1;
   flex-direction: row;
   flex-wrap: wrap;
-  
+}
+
+.overlay__cta-btns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+.overlay__cta-btns button {
+  background: none;
+  border: none;
+  outline: none;
+  margin-bottom: 10px;
+}
+.overlay__cta-btns button:hover {
+  cursor: pointer;
+}
+.btn-cta {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.btn-cta img {
+  width: 30px;
+}
+.btn-cta p {
+  font-size: 18px;
 }

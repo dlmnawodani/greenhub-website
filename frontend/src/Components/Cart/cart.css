@@ -1,0 +1,28 @@
+.cart__container {
+  position: absolute;
+  top: 10;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 1000; /* Ensure a high z-index value to appear above other content */
+  overflow: visible;
+  padding: 10px;
+  border: 2px solid var(--primary-green)
+}
+.cart__item {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+.cart__item h3 {
+    margin-right: 10px;
+}
+.cart__container button {
+    margin-left: 10px;
+    background-color: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+}
+.cart__container button:hover{
+    cursor: pointer;
+}

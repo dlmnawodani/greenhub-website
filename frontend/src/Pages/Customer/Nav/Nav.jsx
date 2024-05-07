@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState, useEffect } from "react";
 import "./nav.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,8 +7,7 @@ import { setToken, setUser } from "../../../redux/slices/authSlice";
 //imgs
 import logo from "../../../assets/images/icons/logo.png";
 import search from "../../../assets/images/icons/search.png";
-import cart from "../../../assets/images/icons/cart.png";
-import profile from "../../../assets/images/icons/profile.png";
+
 
 const Nav = () => {
   const token = useSelector((state) => state.auth.token);
@@ -25,6 +24,7 @@ const Nav = () => {
     localStorage.removeItem("authUser");
     console.log("token rm");
   };
+
   return (
     <header className="wrapper row align-center">
       <div className="wrapper-left">
@@ -40,10 +40,11 @@ const Nav = () => {
         <NavLink to="/">
           <h3 className="pointer">Home</h3>
         </NavLink>
-        <img src={cart} alt="cart" className="icon pointer" />
-        <img src={profile} alt="profile" className="icon" />
+
         <NavLink to="/">
-          <button className="btn-primary" onClick={handleLogout}>Logout</button>
+          <button className="btn-primary" onClick={handleLogout}>
+            Logout
+          </button>
         </NavLink>
       </div>
     </header>
