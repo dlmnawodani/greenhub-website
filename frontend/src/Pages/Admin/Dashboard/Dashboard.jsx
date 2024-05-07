@@ -4,10 +4,12 @@ import "./dashboard.css";
 import AdminCta from "../../../Components/AdminCta/AdminCta";
 import CreateProduct from "../Products/CreateProduct/CreateProduct";
 import DeleteProduct from "../Products/DeleteProduct/DeleteProduct";
+import AllProducts from "../Products/AllProducts/AllProducts";
 const Dashboard = () => {
   const overlayRef = useRef(null);
   const [prodCreateVisibility, setProdCreateVisibility] = useState(false);
   const [prodDltVisibility, setProdDltVisibility] = useState(false)
+  const [productsVisibility, setProductsVisibility] = useState(false);
   const handleProdCreateVisibility = () => {
     setProdCreateVisibility(true);
     console.log("trueeeeeee");
@@ -21,12 +23,21 @@ const Dashboard = () => {
   const handleProdDltClose = () => {
     setProdDltVisibility(false);
   }
+
+  const handleProductsVisibility = () => {
+    setProductsVisibility(true);
+  };
+  const handleProductsClose = () => {
+    setProductsVisibility(false);
+  }
+
   //overlay closes onClick outside the container
   useEffect(() => {
     const handleOutsideClick = (e) => {
       if (overlayRef.current && !overlayRef.current.contains(e.target)) {
         setProdCreateVisibility(false);
         setProdDltVisibility(false);
+        setProductsVisibility(false)
       }
     };
 
@@ -41,6 +52,7 @@ const Dashboard = () => {
       <div className="overlay-components" ref={overlayRef}>
         {prodCreateVisibility && <CreateProduct />}
         {prodDltVisibility && <DeleteProduct />}
+        {productsVisibility && <AllProducts />}
       </div>
       <h3>Products</h3>
       <div className="products-cta">
@@ -50,7 +62,7 @@ const Dashboard = () => {
         <button onClick={handleProdDltVisi}>
           <AdminCta bgColor={"#C23E45"} ctaName={"Delete Product"} />
         </button>
-        <button>
+        <button onClick={handleProductsVisibility}>
           <AdminCta bgColor={"#1A8F93"} ctaName={"All Products"} />
         </button>
       </div>
