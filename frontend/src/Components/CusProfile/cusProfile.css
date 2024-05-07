@@ -1,0 +1,20 @@
+.cusProfile__container {
+  position: absolute;
+  top: 10;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 1000; /* Ensure a high z-index value to appear above other content */
+  overflow: visible;
+  padding: 10px;
+  border: 2px solid var(--primary-green);
+}
+.cusProfile__container .header__h3 {
+    font-size: 24px;
+}
+.cusProfile__orders {
+    display: flex;
+    flex-direction: row;
+}
+.cusProfile__orders h3 {
+    margin-right: 20px;
+    margin-bottom: 5px;
+}

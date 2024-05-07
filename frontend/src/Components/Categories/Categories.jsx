@@ -9,6 +9,8 @@ import ecoKitchen from "../../assets/images/icons/kitchen.png";
 import beauty from "../../assets/images/icons/beauty.png";
 import profile from "../../assets/images/icons/profile.png";
 import cart from "../../assets/images/icons/cart.png";
+//Components
+import CusProfile from "../CusProfile/CusProfile";
 import Cart from "../Cart/Cart";
 
 const Categories = () => {
@@ -18,6 +20,7 @@ const Categories = () => {
   const overlayRef = useRef(null);
 
   const [cartVisibility, setCartVisibility] = useState(false);
+  const [cusProfileVisibility, setCusProfileVisibility] = useState(false);
   const handleCartVisibility = () => {
     setCartVisibility(true);
     console.log("cart visibile");
@@ -25,11 +28,18 @@ const Categories = () => {
   const handleCartCloseClick = () => {
     setCartVisibility(false);
   };
+  const handleProfileVisibility = () => {
+    setCusProfileVisibility(true);
+  };
+  const handleProfileCloseClick = () => {
+    setCusProfileVisibility(false);
+  };
   //overlay closes onClick outside the container
   useEffect(() => {
     const handleOutsideClick = (e) => {
       if (overlayRef.current && !overlayRef.current.contains(e.target)) {
         setCartVisibility(false);
+        setCusProfileVisibility(false);
       }
     };
 
@@ -71,7 +81,7 @@ const Categories = () => {
               <img src={cart} alt="cart" className="icon pointer" />
               <p>Cart</p>
             </button>
-            <button className="btn-cta">
+            <button className="btn-cta" onClick={handleProfileVisibility}>
               <img src={profile} alt="profile" className="icon" />
               <p>Profile</p>
             </button>
@@ -79,8 +89,9 @@ const Categories = () => {
         </div>
       </div>
       <div className="overlay__visibility" ref={overlayRef}>
-          {cartVisibility && <Cart onClose={handleCartCloseClick} />}
-        </div>
+        {cartVisibility && <Cart onClose={handleCartCloseClick} />}
+        {cusProfileVisibility && <CusProfile />}
+      </div>
     </div>
   );
 };

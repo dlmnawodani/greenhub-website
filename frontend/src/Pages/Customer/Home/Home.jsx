@@ -7,6 +7,7 @@ import { NavLink } from "react-router-dom";
 // Components
 import Product from "../../../Components/Product/Product";
 import Cart from "../../../Components/Cart/Cart";
+import CusProfile from "../../../Components/CusProfile/CusProfile";
 
 //Imgs
 import menu from "../../../assets/images/icons/menu.png";
@@ -24,6 +25,7 @@ const Home = () => {
   //get
   const [productsData, setProductsData] = useState(null);
   const [cartVisibility, setCartVisibility] = useState(false);
+  const [cusProfileVisibility, setCusProfileVisibility] = useState(false);
 
   const handleCartVisibility = () => {
     setCartVisibility(true);
@@ -32,6 +34,13 @@ const Home = () => {
   const handleCartCloseClick = () => {
     setCartVisibility(false);
   };
+
+  const handleProfileVisibility = () => {
+    setCusProfileVisibility(true);
+  }
+  const handleProfileCloseClick = () => {
+    setCusProfileVisibility(false);
+  }
 
   const loadProducts = async () => {
     try {
@@ -59,6 +68,7 @@ const Home = () => {
     const handleOutsideClick = (e) => {
       if (overlayRef.current && !overlayRef.current.contains(e.target)) {
         setCartVisibility(false);
+        setCusProfileVisibility(false);
       }
     };
 
@@ -106,7 +116,7 @@ const Home = () => {
               />
               <p>Cart</p>
             </button>
-            <button className="btn-cta">
+            <button className="btn-cta" onClick={handleProfileVisibility}>
               <img src={profile} alt="profile" className="icon" />
               <p>Profile</p>
             </button>
@@ -115,7 +125,8 @@ const Home = () => {
       </div>
       <div className="home__products">
         <div className="overlay__visibility" ref={overlayRef}>
-          {cartVisibility && <Cart onClose={handleCartCloseClick} />}
+          {cartVisibility && <Cart />}
+          {cusProfileVisibility && <CusProfile />}
         </div>
         <h1 className="home__container-header">Browse All Products</h1>
         <div className="products__section">
