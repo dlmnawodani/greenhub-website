@@ -16,6 +16,9 @@ import Nav from "./Pages/Customer/Nav/Nav";
 //Admin
 import DashNav from "./Pages/Admin/DashNav/DashNav";
 import Dashboard from "./Pages/Admin/Dashboard/Dashboard";
+import ZeroWaste from "./Pages/Customer/ZeroWaste/ZeroWaste";
+import EcoKitchen from "./Pages/Customer/EcoKitchen/EcoKitchen";
+import NaturalBeauty from "./Pages/Customer/NaturalBeauty/NaturalBeauty";
 
 const App = () => {
   //Checks user role on Login
@@ -54,6 +57,9 @@ const App = () => {
          <Route path="/" element={user ? (user.user_role == "ADMIN") ? <Dashboard /> : <Home /> : <Home />} />
          <Route path="/login" element={<Login />} />
          <Route path="/signup" element={<SignUp />} />
+         <Route path="/zero-waste" element={<ZeroWaste />} />
+         <Route path="/eco-kitchen" element={<EcoKitchen />} />
+         <Route path="/natural-beauty" element={<NaturalBeauty />} />
       </Routes>
     </>
   );

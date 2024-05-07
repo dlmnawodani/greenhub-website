@@ -1,0 +1,18 @@
+.naturalBeauty__container {
+  display: flex;
+  flex-direction: row;
+}
+.naturalBeauty__products {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+.naturalBeauty__products h1 {
+  font-size: 22px;
+}
+.products__section {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
