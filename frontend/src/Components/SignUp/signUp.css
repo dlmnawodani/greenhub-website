@@ -1,0 +1,71 @@
+.wrapper_sign {
+  overflow-y: hidden;
+  overflow-x: hidden;
+  transform: translate(50px, 100px);
+}
+.wrapper-left {
+  padding-left: 100px;
+}
+.wrapper-left h3 {
+  font-size: 36px;
+}
+.wrapper-left h3 span {
+  color: var(--primary-green);
+}
+.wrapper-left p {
+  width: 40vw;
+}
+.wrapper-right_sign {
+  display: flex;
+  flex-direction: column;
+
+  overflow-y: hidden;
+
+  transform: translate(-50px, 100px);
+}
+.wrapper-right_sign form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.wrapper-right_sign label {
+  display: flex;
+  flex-direction: row;
+}
+.wrapper-right_sign p {
+  font-size: 22px;
+  font-weight: 500;
+  padding-right: 20px;
+}
+.signUp_h3 {
+    font-weight: 500;
+    color: var(--primary-green);
+    margin: 10px 0px;
+}
+.image_content {
+    transform: translateX(-3px);
+}
+.wrapper-right_sign input {
+  height: 25px;
+  width: 300px;
+  border-radius: 30px;
+  border: 1px solid black;
+  outline: none;
+  padding: 2px 20px;
+}
+.wrapper-right_sign .input-password {
+  transform: translateX(8px);
+}
+.wrapper-right_sign form .btn-login {
+  background-color: #61ba7a;
+  color: white;
+  font-size: 22px;
+  padding: 1px 40px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  margin-top: 10px;
+}
+.wrapper-right_sign form .btn-login:hover {
+  cursor: pointer;
+}
