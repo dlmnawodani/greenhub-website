@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import { useSelector } from "react-redux";
+import { setToken, setUser } from "./redux/slices/authSlice";
 
-function App() {
-  const [count, setCount] = useState(0)
+import { store } from "./redux/store";
 
+//Customer
+import Home from "./Pages/Customer/Home/Home";
+import Nav from "./Pages/Customer/Nav/Nav";
+//Admin
+import DashNav from "./Pages/Admin/DashNav/DashNav";
+import Dashboard from "./Pages/Admin/Dashboard/Dashboard";
+
+const App = () => {
+  //Checks user role on Login
+  const ProtectedRoutes = ({
+    protectedComponent,
+    guestComponent = null,
+    user,
+  }) => {
+    if (!user) {
+      return <Login />;
+    }
+    if (user && user.user_role == "ADMIN") {
+      return protectedComponent;
+    }
+
+    return guestComponent;
+  };
+
+  const user = useSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    let authUser = localStorage.getItem("authUser");
+    let authToken = localStorage.getItem("accessToken");
+    if (authUser) {
+      authUser = JSON.parse(authUser);
+      store.dispatch(setUser(authUser));
+      store.dispatch(setToken(authToken));
+    }
+  }, []);
+
+  console.log("user", user);
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {user ? (user.user_role == "ADMIN") ? <DashNav /> : <Nav /> : ""}
+      <Routes>
+         <Route path="/" element={user ? (user.user_role == "ADMIN") ? <Dashboard /> : <Home /> : <Home />} />
+      </Routes>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
